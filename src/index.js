@@ -7,11 +7,20 @@ const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3333
 
 router.get('/test', (req, res) => {
   res.send('This is from my other router')
 })
+
+// middleware example
+// app.use((req, res, next) => {
+//   if (req.method === 'GET') {
+//     res.send('Get methods are disabled')
+//   } else {
+//     next()
+//   }
+// })
 
 app.use(express.json())
 app.use(router)
@@ -214,3 +223,45 @@ app.use(taskRouter)
 app.listen(port, () => {
   console.log('Server is up on port ' + port)
 })
+
+// const bcrypt = require('bcryptjs')
+
+// const myFunction = async () => {
+//   const password = 'Aa@123456'
+//   const hashedPassword = await bcrypt.hash(password, 8)
+
+//   console.log(password)
+//   console.log(hashedPassword)
+
+//   const isMatch = await bcrypt.compare('Aa@123456', hashedPassword)
+//   console.log(isMatch)
+// }
+
+// const jwt = require('jsonwebtoken')
+
+// const myFunction = async () => {
+//   const token = jwt.sign({ _id: 'abc123'}, 'thisismynewcourse')
+//   console.log(token)
+
+//   const data = jwt.verify(token, 'thisismynewcourse')
+//   console.log(data)
+// }
+
+// myFunction()
+
+const Task = require('./models/task')
+const User = require('./models/user')
+
+const main = async () => {
+  // const task = await Task.findById('5c9a55d2a01a9b0e7989031d')
+  // await task.populate('owner').execPopulate()
+  // console.log(task.owner)
+
+  const user = await User.findById('5c99aacf5c048f0a4f61db20')
+  await user.populate('tasks').execPopulate()
+  console.log(user.tasks)
+}
+
+main()
+
+
